@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.example.creativebaz.activities.LoginActivity
 import com.example.creativebaz.activities.RegisterActivity
+import com.example.creativebaz.activities.UserProfileActivity
 import com.example.creativebaz.models.User
 import com.example.creativebaz.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -68,6 +69,32 @@ class FirestoreClass {
                     }
                 }
             }
+    }
+
+    fun updateUserProfileData(activity: Activity, userHashMap: HashMap<String, Any>){
+        mFireStore.collection(Constants.USERS)
+            .document(getCurrentUserId())
+            .update(userHashMap)
+            .addOnSuccessListener{
+                when (activity){
+                    is UserProfileActivity -> {
+                        activity.userProfileUpdateSuccess()
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                when (activity){
+                    is UserProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error al cambiar los detalles del usuario",
+                    e
+                )
+            }
+
     }
 
 }

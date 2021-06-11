@@ -11,6 +11,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="slogan">Tu arte al alcance de tus manos</string>
     <string name="catpop">Categorías populares</string>
+    <string name="read_storage_permission_denied">No tienes permiso para entrar a la memoria del equipo</string>
 
     <string-array name="categorias">
         <item>Artesanías</item>
@@ -46,6 +47,10 @@
     <string name="err_msg_enter_password">Ingrese contraseña</string>
     <string name="please_wait">Por favor espere</string>
     <string name="register_success">¡Has sido registrado!</string>
+    <string name="image_selection_failed">La selección de imagen falló.</string>
+    <string name="err_msg_enter_mobile">Ingrese su número</string>
+    <string name="err_msg_enter_profession">Ingrese su profesion</string>
+    <string name="msg_profile_update_success">Su perfil fue actualizado exitosamente</string>
 
     <string-array name="professions">
         <item>Creador</item>

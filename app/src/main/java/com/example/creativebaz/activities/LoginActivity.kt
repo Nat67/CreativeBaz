@@ -11,6 +11,7 @@ import android.view.WindowManager
 import com.example.creativebaz.R
 import com.example.creativebaz.firestore.FirestoreClass
 import com.example.creativebaz.models.User
+import com.example.creativebaz.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.loginbtn
@@ -78,6 +79,7 @@ class LoginActivity : BaseActivity() {
 
         if(user.profileCompleted == 0) {
             val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS, user)
             startActivity(intent)
         }else{
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
