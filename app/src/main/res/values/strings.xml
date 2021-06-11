@@ -45,6 +45,7 @@
     <string name="err_msg_enter_email">Ingrese correo</string>
     <string name="err_msg_enter_password">Ingrese contraseña</string>
     <string name="please_wait">Por favor espere</string>
+    <string name="register_success">¡Has sido registrado!</string>
 
     <string-array name="professions">
         <item>Creador</item>

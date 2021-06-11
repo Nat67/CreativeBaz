@@ -5,9 +5,12 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.creativebaz.R
+import com.example.creativebaz.firestore.FirestoreClass
+import com.example.creativebaz.models.User
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.loginbtn
@@ -58,15 +61,29 @@ class LoginActivity : BaseActivity() {
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 task ->
 
-                hideProgressDialog()
-
                 if(task.isSuccessful) {
-                    showErrorSnackBar("Ingresó correctamente", false)
+                    FirestoreClass().getCurrentUser(this@LoginActivity)
                 }else{
+                    hideProgressDialog()
                     showErrorSnackBar(task.exception!!.message.toString(), true)
                 }
             }
         }
+    }
+
+    fun userLoggedInSuccess(user: User){
+        hideProgressDialog()
+
+        Log.i("Name", user.name)
+
+        if(user.profileCompleted == 0) {
+            val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            startActivity(intent)
+        }else{
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        }
+
+        finish()
     }
 
 

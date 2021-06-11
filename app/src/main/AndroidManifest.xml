@@ -9,13 +9,14 @@
         android:roundIcon="@mipmap/creativebaz_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CreativeBaz">
-        <activity android:name=".activities.BaseActivity"></activity>
+        <activity android:name=".activities.UserProfileActivity"></activity>
+        <activity android:name=".activities.BaseActivity" />
         <activity
             android:name=".activities.RegisterActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LoginActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SplashActivity"
             android:screenOrientation="portrait">
