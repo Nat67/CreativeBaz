@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatTextView
 class TextViewRegular (context: Context, attrs : AttributeSet) : AppCompatEditText(context, attrs) {
 
     init {
-        applyFont()
+        //applyFont()
     }
 
     private fun applyFont() {

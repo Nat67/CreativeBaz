@@ -66,5 +66,15 @@
     <string name="btn_lbl_logout">Cerrar Sesión</string>
     <string name="title_complete_profile">Acabe de personalizar su perfil</string>
     <string name="title_edit_profile">Editar Perfil</string>
+    <string name="action_add_product">Añadir producto</string>
+
+    <string name="title_add_product">Añadir Producto</string>
+    <string name="hint_product_title">Nombre del producto</string>
+    <string name="hint_product_price">Precio del producto</string>
+    <string name="hint_product_description">Descripción del producto</string>
+    <string name="hint_product_quantity">Cantidad del producto</string>
+    <string name="content_description">Product Image</string>
+    <string name="btn_lbl_submit">Subir Producto</string>
+    <string name="hint_product_category">Categoría del producto</string>
 
 </resources>

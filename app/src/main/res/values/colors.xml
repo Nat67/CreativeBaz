@@ -20,4 +20,6 @@
 
     <color name="colorSnackBarSuccess">#8DC34A</color>
     <color name="colorSnackBarError">#F72400</color>
+
+    <color name="colorImageViewBackground">#E1E1E1</color>
 </resources>
