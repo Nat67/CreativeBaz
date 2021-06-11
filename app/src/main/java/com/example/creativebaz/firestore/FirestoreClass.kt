@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.creativebaz.models.Product
 import com.example.creativebaz.models.User
 import com.example.creativebaz.ui.activities.*
+import com.example.creativebaz.ui.fragments.DashboardFragment
 import com.example.creativebaz.ui.fragments.ProductsFragment
 import com.example.creativebaz.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -187,5 +188,41 @@ class FirestoreClass {
             }
     }
 
+    fun getDasbhoardItemsList(fragment: DashboardFragment){
+        mFireStore.collection(Constants.PRODUCTS)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e("Products list:", document.documents.toString())
+                val productsList: ArrayList<Product> = ArrayList()
+                for(i in document.documents){
+                    val product = i.toObject(Product::class.java)
+                    product!!.product_id = i.id
+                    productsList.add(product)
+                }
+                fragment.successDashboardItemsList(productsList)
+            }
+            .addOnFailureListener {
+                e ->
+                fragment.hideProgressDialog()
+                Log.e(fragment.javaClass.simpleName, "Error al obtener los ítems", e)
+            }
+    }
+
+    fun deleteProduct(fragment: ProductsFragment, productId: String) {
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(productId)
+            .delete()
+            .addOnSuccessListener {
+                fragment.productDeleteSuccess()
+            }
+            .addOnFailureListener { e ->
+                fragment.hideProgressDialog()
+                Log.e(
+                    fragment.requireActivity().javaClass.simpleName,
+                    "Error while deleting the product.",
+                    e
+                )
+            }
+    }
 
 }

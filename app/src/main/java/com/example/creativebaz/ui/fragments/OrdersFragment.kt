@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.creativebaz.R
 
-class OrdersFragment : Fragment() {
+class OrdersFragment : BaseFragment() {
 
     //private lateinit var notificationsViewModel: NotificationsViewModel
 
@@ -19,9 +19,6 @@ class OrdersFragment : Fragment() {
     ): View? {
         //notificationsViewModel = ViewModelProvider(this).get(NotificationsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_orders, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-
-        textView.text = "this is notifications fragment"
 
         return root
     }

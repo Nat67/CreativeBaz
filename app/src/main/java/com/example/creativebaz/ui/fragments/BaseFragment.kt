@@ -45,7 +45,7 @@ open class BaseFragment : Fragment() {
         FirestoreClass().getProductsList(this)
     }
 
-    fun hideProgressDialog(){
+    fun hideProgressDialog() {
         mProgressDialog.dismiss()
     }
 

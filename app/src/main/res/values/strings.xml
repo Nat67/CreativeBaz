@@ -54,7 +54,7 @@
         <item>Pintor(a)</item>
     </string-array>
     <!--<string name="title_activity_dashboard">MainActivity</string>-->
-    <string name="title_products">Productos</string>
+    <string name="title_products">Mis Productos</string>
     <string name="title_dashboard">Inicio</string>
     <string name="title_orders">Órdenes</string>
     <string name="please_click_back_again_to_exit">Por favor, da click dos veces para salir</string>
@@ -83,5 +83,17 @@
     <string name="err_msg_select_product_category">Por favor elije una categoría</string>
     <string name="product_upload_success_message">Tu producto se ha agregado exitosamente</string>
     <string name="no_products_added_yet">Aún no hay productos agregados</string>
+    <string name="no_dashboard_item_found">No se encontraron productos!</string>
+    <string name="product_delete_success_message">Producto eliminado exitosamente</string>
+    <string name="delete_dialog_title">Eliminar</string>
+    <string name="delete_dialog_message">Seguro que quieres borrar el producto?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="title_activity_product_details">ProductDetailsActivity</string>
+
+
+    <string name="title_product_details">PRODUCT DETAILS</string>
+    <string name="lbl_product_description">Product Description</string>
+    <string name="lbl_product_details_stock_quantity">Stock Quantity</string>
 
 </resources>

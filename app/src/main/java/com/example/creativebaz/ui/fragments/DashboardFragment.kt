@@ -2,18 +2,28 @@ package com.example.creativebaz.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.creativebaz.R
+import com.example.creativebaz.firestore.FirestoreClass
+import com.example.creativebaz.models.Product
 import com.example.creativebaz.ui.activities.SettingsActivity
+import com.example.creativebaz.ui.adapters.DashboardAdapter
+import kotlinx.android.synthetic.main.fragment_dashboard.*
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
-    //private lateinit var dashboardViewModel: DashboardViewModel
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getDasbhoardItemsList()
     }
 
     override fun onCreateView(
@@ -21,13 +31,8 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /*dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)*/
+
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-
-            textView.text = "This is dashboard fragment"
-
         return root
     }
 
@@ -46,5 +51,29 @@ class DashboardFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun getDasbhoardItemsList(){
+        //showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().getDasbhoardItemsList(this@DashboardFragment)
+    }
+
+    fun successDashboardItemsList(dashboardItemsList: ArrayList<Product>){
+        hideProgressDialog()
+
+        if(dashboardItemsList.size > 0 ){
+            rv_dashboard_items.visibility = View.VISIBLE
+            tv_no_dashboard_items_found.visibility = View.GONE
+
+            rv_dashboard_items.layoutManager = GridLayoutManager(activity, 2)
+            rv_dashboard_items.setHasFixedSize(true)
+
+            val adapter = DashboardAdapter(requireActivity(), dashboardItemsList)
+            rv_dashboard_items.adapter = adapter
+
+        } else{
+            rv_dashboard_items.visibility = View.GONE
+            tv_no_dashboard_items_found.visibility = View.VISIBLE
+        }
     }
 }

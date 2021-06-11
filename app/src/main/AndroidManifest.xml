@@ -12,9 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CreativeBaz">
         <activity
-            android:name=".ui.activities.AddProductActivity"
+            android:name=".ui.activities.ProductDetailsActivity"
+            android:label="@string/title_activity_product_details"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".ui.activities.AddProductActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:screenOrientation="portrait"
