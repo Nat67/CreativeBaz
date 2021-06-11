@@ -64,5 +64,7 @@
     <string name="lbl_edit">Editar</string>
     <string name="lbl_addresses">Direcciones</string>
     <string name="btn_lbl_logout">Cerrar Sesión</string>
+    <string name="title_complete_profile">Acabe de personalizar su perfil</string>
+    <string name="title_edit_profile">Editar Perfil</string>
 
 </resources>

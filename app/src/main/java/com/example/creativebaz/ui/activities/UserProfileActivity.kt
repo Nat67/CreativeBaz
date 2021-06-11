@@ -28,7 +28,6 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
 
-
         if(intent.hasExtra(Constants.EXTRA_USER_DETAILS)){
             mUserDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
         }
@@ -37,6 +36,25 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
         edit_mail.isEnabled = false
         edit_mail.setText(mUserDetails.email)
+
+        if (mUserDetails.profileCompleted == 0){
+            editTitle.text = resources.getString(R.string.title_complete_profile)
+            edit_name.setText(mUserDetails.name)
+
+            edit_mail.isEnabled = false
+
+        } else{
+            setupActionBar()
+            editTitle.text = resources.getString(R.string.title_edit_profile)
+            GlideLoader(this@UserProfileActivity).loadUserPicture(mUserDetails.image, user_photo)
+
+            edit_bio.setText(mUserDetails.bio.toString())
+            edit_profession.setText(mUserDetails.profession.toString())
+
+            if(mUserDetails.mobile != 0L){
+                edit_mobile.setText(mUserDetails.mobile.toString())
+            }
+        }
 
         user_photo.setOnClickListener(this@UserProfileActivity)
         save_btn.setOnClickListener(this@UserProfileActivity)
@@ -76,25 +94,25 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         val name = edit_name.text.toString().trim { it <= ' ' }
         val mobileNumber = edit_mobile.text.toString().trim{ it <= ' '}
         val bio = edit_bio.text.toString()
-        val profession = edit_profession.text.toString()
+        val profession = edit_profession.text.toString().trim{ it <= ' '}
 
         if(mUserProfileImageURL.isNotEmpty()){
             userHashMap[Constants.IMAGE] = mUserProfileImageURL
         }
 
-        if (mobileNumber.isNotEmpty()){
+        if (mobileNumber.isNotEmpty() && mobileNumber != mUserDetails.mobile.toString()){
             userHashMap[Constants.MOBILE] = mobileNumber.toLong()
         }
 
-        if (name.isNotEmpty()){
+        if (name.isNotEmpty() && name != mUserDetails.name){
             userHashMap[Constants.NAME] = name
         }
 
-        if (bio.isNotEmpty()){
+        if (bio.isNotEmpty() && bio != mUserDetails.bio){
             userHashMap[Constants.BIO] = bio
         }
 
-        if (profession.isNotEmpty()){
+        if (profession.isNotEmpty() && profession != mUserDetails.profession){
             userHashMap[Constants.PROFESSION] = profession
         }
         userHashMap[Constants.PROFILE_COMPLETE] =1
@@ -107,7 +125,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         Toast.makeText(this@UserProfileActivity,
         resources.getString(R.string.msg_profile_update_success), Toast.LENGTH_SHORT).show()
 
-        startActivity(Intent(this@UserProfileActivity, MainActivity::class.java))
+        startActivity(Intent(this@UserProfileActivity, DashboardActivity::class.java))
         finish()
     }
 
@@ -165,5 +183,17 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     fun imageUploadSuccess(imageURL: String){
         mUserProfileImageURL = imageURL
         updateUserProfileDetails()
+    }
+
+    private fun setupActionBar(){
+        setSupportActionBar(toolbar_user_profile_activity)
+
+        val actionBar = supportActionBar
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back)
+        }
+
+        toolbar_user_profile_activity.setNavigationOnClickListener {onBackPressed()}
     }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--TODO Step 2: Design the settings screen layout-->
-<!--START-->
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -32,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
 
-                <TextView
+                <com.example.creativebaz.utils.TextView
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -45,6 +44,7 @@
                     android:textStyle="bold" />
 
             </androidx.appcompat.widget.Toolbar>
+
         </FrameLayout>
 
         <FrameLayout
@@ -61,7 +61,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/settings_user_picture_margin"
                 android:scaleType="fitXY"
-                android:src="@drawable/user_placeholder" />
+                android:src="@drawable/ic_baseline_person_24" />
 
             <View
                 android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                 android:background="@drawable/user_image_background" />
         </FrameLayout>
 
-        <com.example.creativebaz.utils.TextViewRegular
+        <com.example.creativebaz.utils.TextView
             android:id="@+id/tv_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,51 +97,62 @@
             android:textSize="@dimen/settings_name_textSize"
             tools:text="Nombre Apellido" />
 
-        <com.example.creativebaz.utils.TextViewRegular
+        <com.example.creativebaz.utils.TextView
             android:id="@+id/tv_profession"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_name"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/settings_info_marginTop"
+            android:layout_marginTop="18dp"
             android:textColor="@color/accent"
             android:textSize="@dimen/settings_info_textSize"
             tools:text="Artista" />
 
-        <com.example.creativebaz.utils.TextViewRegular
+        <com.example.creativebaz.utils.TextView
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_profession"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/settings_info_marginTop"
+            android:layout_marginTop="18dp"
             android:textColor="@color/accent"
             android:textSize="@dimen/settings_info_textSize"
             tools:text="ejemplo@gmail.com" />
 
-        <com.example.creativebaz.utils.TextViewRegular
+        <com.example.creativebaz.utils.TextView
             android:id="@+id/tv_mobile_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_email"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/settings_info_marginTop"
+            android:layout_marginTop="19dp"
             android:textColor="@color/accent"
             android:textSize="@dimen/settings_info_textSize"
             tools:text="123456789" />
+
+        <com.example.creativebaz.utils.TextView
+            android:id="@+id/tv_bio"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_mobile_number"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:textColor="@color/accent"
+            android:textSize="@dimen/settings_info_textSize"
+            tools:text="@string/bio_empty" />
 
         <LinearLayout
             android:id="@+id/ll_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_mobile_number"
+            android:layout_below="@id/tv_bio"
             android:layout_margin="@dimen/settings_address_margin"
             android:background="@drawable/item_grey_border_background"
             android:foreground="?attr/selectableItemBackground"
             android:orientation="horizontal"
             android:padding="@dimen/settings_address_padding">
 
-            <com.example.creativebaz.utils.TextViewRegular
+            <com.example.creativebaz.utils.TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/settings_lbl_addresses_margin"
@@ -178,4 +189,3 @@
 
     </RelativeLayout>
 </ScrollView>
-    <!--END-->

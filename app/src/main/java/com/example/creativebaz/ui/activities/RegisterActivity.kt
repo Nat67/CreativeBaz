@@ -22,7 +22,6 @@ class RegisterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // Inicializa objetos:
         auth = Firebase.auth
 
         loginbtn.setOnClickListener {
@@ -85,9 +84,6 @@ class RegisterActivity : BaseActivity() {
 
                             FirestoreClass().registerUser(this, user)
 
-                            //FirebaseAuth.getInstance().signOut()
-                            //finish()
-
                         } else {
                             hideProgressDialog()
                             // If the registering is not successful then show error message.
@@ -104,6 +100,9 @@ class RegisterActivity : BaseActivity() {
             resources.getString(R.string.register_success),
             Toast.LENGTH_SHORT
         ).show()
+
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
 }

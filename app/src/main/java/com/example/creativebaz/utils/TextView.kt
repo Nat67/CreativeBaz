@@ -3,10 +3,9 @@ package com.example.creativebaz.utils
 import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 
-class TextViewMedium(context:Context, attrs : AttributeSet) : AppCompatTextView(context, attrs) {
+class TextView (context: Context, attrs : AttributeSet) : AppCompatTextView(context, attrs) {
 
     init {
         applyFont()
@@ -14,7 +13,7 @@ class TextViewMedium(context:Context, attrs : AttributeSet) : AppCompatTextView(
 
     private fun applyFont() {
         val typeface: Typeface =
-            Typeface.createFromAsset(context.assets, "Cinzel-Bold.ttf")
+            Typeface.createFromAsset(context.assets, "Cinzel-Regular.ttf")
         setTypeface(typeface)
     }
 }

@@ -49,12 +49,12 @@ class SettingsActivity : BaseActivity(),  View.OnClickListener{
         mUserDetails = user
         hideProgressDialog()
         GlideLoader(this@SettingsActivity).loadUserPicture(user.image, iv_user_photo)
-        tv_name.text = "${user.name}"
 
-        //ESTO NO FUNCIONA AIUDA
-        /*tv_profession.text = user.profession
+        tv_name.text = "${user.name}"
+        tv_profession.text = user.profession
         tv_email.text = user.email
-        tv_mobile_number.text = "${user.mobile}"*/
+        tv_mobile_number.text = "${user.mobile}"
+        tv_bio.text = user.bio
     }
 
     override fun onResume(){
