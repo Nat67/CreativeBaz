@@ -11,11 +11,15 @@
         android:roundIcon="@mipmap/creativebaz_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CreativeBaz">
+        <activity android:name=".ui.activities.CartListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
         <activity
             android:name=".ui.activities.ProductDetailsActivity"
             android:label="@string/title_activity_product_details"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.activities.AddProductActivity"
             android:screenOrientation="portrait"

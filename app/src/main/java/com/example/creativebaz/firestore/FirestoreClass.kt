@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
+import com.example.creativebaz.models.CartItem
 import com.example.creativebaz.models.Product
 import com.example.creativebaz.models.User
 import com.example.creativebaz.ui.activities.*
@@ -241,6 +242,66 @@ class FirestoreClass {
                     "Error while deleting the product.",
                     e
                 )
+            }
+    }
+
+    fun addCartItems(activity: ProductDetailsActivity, addToCart: CartItem){
+        mFireStore.collection(Constants.CART_ITEMS)
+            .document()
+            .set(addToCart, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.addToCartSuccess()
+            }.addOnFailureListener{
+                e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error al crear el documento para agregar al carrito", e)
+            }
+    }
+
+    fun getCartList(activity: Activity){
+        mFireStore.collection(Constants.CART_ITEMS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .get()
+            .addOnSuccessListener {document ->
+                val list:ArrayList<CartItem> = ArrayList()
+                for(i in document.documents){
+                    var cartItem = i.toObject((CartItem:: class.java))!!
+                    cartItem.id = i.id
+                    list.add(cartItem)
+                }
+                when(activity){
+                    is CartListActivity -> {
+                        activity.getSuccessCartItemsList(list)
+                    }
+                }
+            }
+            .addOnFailureListener{
+                e ->
+                when(activity){
+                    is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
+                Log.e(activity.javaClass.simpleName, "Error al obtener los productos del carrito", e)
+            }
+    }
+
+    fun checkIfItemExistsInCart(activity: ProductDetailsActivity, productId: String){
+        mFireStore.collection(Constants.CART_ITEMS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .whereEqualTo(Constants.PRODUCT_ID, productId)
+            .get()
+            .addOnSuccessListener { document ->
+                if(document.documents.size > 0){
+                    activity.productExistsInCart()
+                }else{
+                    activity.hideProgressDialog()
+                }
+            }.addOnFailureListener{
+                    e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error al revisar carrito", e)
             }
     }
 

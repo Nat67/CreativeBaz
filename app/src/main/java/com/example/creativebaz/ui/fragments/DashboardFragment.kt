@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.creativebaz.R
 import com.example.creativebaz.firestore.FirestoreClass
 import com.example.creativebaz.models.Product
+import com.example.creativebaz.ui.activities.CartListActivity
+import com.example.creativebaz.ui.activities.ProductDetailsActivity
 import com.example.creativebaz.ui.activities.SettingsActivity
 import com.example.creativebaz.ui.adapters.DashboardAdapter
+import com.example.creativebaz.utils.Constants
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : BaseFragment() {
@@ -49,6 +52,11 @@ class DashboardFragment : BaseFragment() {
                 startActivity(Intent(activity, SettingsActivity::class.java))
                 return true
             }
+
+            R.id.action_cart->{
+                startActivity(Intent(activity, CartListActivity::class.java))
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -70,6 +78,14 @@ class DashboardFragment : BaseFragment() {
 
             val adapter = DashboardAdapter(requireActivity(), dashboardItemsList)
             rv_dashboard_items.adapter = adapter
+
+            adapter.setOnClickListener(object: DashboardAdapter.OnClickListener{
+                override fun onClick(position: Int, product: Product) {
+                    val intent = Intent(context, ProductDetailsActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_PRODUCT_ID, product.product_id)
+                    startActivity(intent)
+                }
+            })
 
         } else{
             rv_dashboard_items.visibility = View.GONE
