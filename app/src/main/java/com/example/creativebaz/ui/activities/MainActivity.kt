@@ -1,4 +1,4 @@
-package com.example.creativebaz.activities
+package com.example.creativebaz.ui.activities
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity

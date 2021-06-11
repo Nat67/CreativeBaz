@@ -1,24 +1,17 @@
-package com.example.creativebaz.activities
+package com.example.creativebaz.ui.activities
 
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
-import android.view.WindowInsets
-import android.view.WindowManager
 import com.example.creativebaz.R
 import com.example.creativebaz.firestore.FirestoreClass
 import com.example.creativebaz.models.User
 import com.example.creativebaz.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.loginbtn
 import kotlinx.android.synthetic.main.activity_login.mail
 import kotlinx.android.synthetic.main.activity_login.password
 import kotlinx.android.synthetic.main.activity_login.registerbtn
-import kotlinx.android.synthetic.main.activity_register.*
 
 class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,15 +67,12 @@ class LoginActivity : BaseActivity() {
 
     fun userLoggedInSuccess(user: User){
         hideProgressDialog()
-
-        Log.i("Name", user.name)
-
         if(user.profileCompleted == 0) {
             val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
             intent.putExtra(Constants.EXTRA_USER_DETAILS, user)
             startActivity(intent)
         }else{
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
         }
 
         finish()

@@ -1,4 +1,4 @@
-package com.example.creativebaz.activities
+package com.example.creativebaz.ui.activities
 
 import android.animation.ObjectAnimator
 import android.content.Intent
@@ -26,10 +26,7 @@ class SplashActivity : AppCompatActivity() {
         Handler().postDelayed({
             val intento = Intent(this, LoginActivity::class.java)
             startActivity(intento)
-            finish() }, 3500)
-
-        /*val typeface: Typeface = Typeface.createFromAsset(assets, "Cinzel-Medium.ttf")
-        AppTitle.typeface = typeface*/
+            finish() }, 3000)
 
     }
 }

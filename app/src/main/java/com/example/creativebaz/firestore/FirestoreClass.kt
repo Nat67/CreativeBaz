@@ -5,10 +5,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import com.example.creativebaz.activities.LoginActivity
-import com.example.creativebaz.activities.RegisterActivity
-import com.example.creativebaz.activities.UserProfileActivity
+import com.example.creativebaz.ui.activities.LoginActivity
+import com.example.creativebaz.ui.activities.RegisterActivity
+import com.example.creativebaz.ui.activities.UserProfileActivity
 import com.example.creativebaz.models.User
+import com.example.creativebaz.ui.activities.SettingsActivity
 import com.example.creativebaz.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -70,6 +71,9 @@ class FirestoreClass {
                     is LoginActivity -> {
                         activity.userLoggedInSuccess(user)
                     }
+                    is SettingsActivity ->{
+                        activity.userDetailSuccess(user)
+                    }
                 }
             }
     }
@@ -88,6 +92,9 @@ class FirestoreClass {
             .addOnFailureListener { e ->
                 when (activity){
                     is UserProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is SettingsActivity ->{
                         activity.hideProgressDialog()
                     }
                 }

@@ -1,14 +1,7 @@
 <resources>
     <string name="app_name">CreativeBaz</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="home">Inicio</string>
-    <string name="explore">Explorar</string>
-    <string name="notifications">Notificaciones</string>
     <string name="profile">Perfil</string>
-    <string name="title_activity_main2">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="slogan">Tu arte al alcance de tus manos</string>
     <string name="catpop">Categorías populares</string>
     <string name="read_storage_permission_denied">No tienes permiso para entrar a la memoria del equipo</string>
@@ -60,4 +53,16 @@
         <item>Joyer@</item>
         <item>Pintor(a)</item>
     </string-array>
+    <!--<string name="title_activity_dashboard">MainActivity</string>-->
+    <string name="title_products">Productos</string>
+    <string name="title_dashboard">Inicio</string>
+    <string name="title_orders">Órdenes</string>
+    <string name="please_click_back_again_to_exit">Por favor, da click dos veces para salir</string>
+    <string name="action_settings">Configuración</string>
+
+    <string name="title_settings">Configuración</string>
+    <string name="lbl_edit">Editar</string>
+    <string name="lbl_addresses">Direcciones</string>
+    <string name="btn_lbl_logout">Cerrar Sesión</string>
+
 </resources>

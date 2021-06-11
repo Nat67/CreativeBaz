@@ -1,7 +1,6 @@
-package com.example.creativebaz.activities
+package com.example.creativebaz.ui.activities
 
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -23,6 +22,7 @@ import java.io.IOException
 class UserProfileActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mUserDetails: User
     private var mSelectedImageFileUri: Uri? = null
+    private var mUserProfileImageURL : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,40 +55,51 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
                 R.id.save_btn -> {
-                    showProgressDialog(resources.getString(R.string.please_wait))
-                    FirestoreClass().uploadImageToCloudStorage(this, mSelectedImageFileUri)
-                    /*
+
+
                     if(validateUserProfileDetails()){
-                        //showErrorSnackBar("Tu información es correcta", false)
-                        val userHashMap = HashMap<String, Any>()
-                        val name = edit_name.text.toString().trim { it <= ' ' }
-                        val mobileNumber = edit_mobile.text.toString().trim{ it <= ' '}
-                        val bio = edit_bio.text.toString()
-                        val profession = edit_profession.text.toString()
-
-                        if (mobileNumber.isNotEmpty()){
-                            userHashMap[Constants.MOBILE] = mobileNumber.toLong()
-                        }
-
-                        if (name.isNotEmpty()){
-                            userHashMap[Constants.NAME] = name
-                        }
-
-                        if (bio.isNotEmpty()){
-                            userHashMap[Constants.BIO] = bio
-                        }
-
-                        if (profession.isNotEmpty()){
-                            userHashMap[Constants.PROFESSION] = profession
-                        }
-
                         showProgressDialog(resources.getString(R.string.please_wait))
 
-                        FirestoreClass().updateUserProfileData(this, userHashMap)
-                    }*/
+                        if(mSelectedImageFileUri != null){
+                            FirestoreClass().uploadImageToCloudStorage(this, mSelectedImageFileUri)
+                        }else{
+                          updateUserProfileDetails()
+                        }
+                    }
                 }
             }
         }
+    }
+
+    private fun updateUserProfileDetails(){
+        val userHashMap = HashMap<String, Any>()
+        val name = edit_name.text.toString().trim { it <= ' ' }
+        val mobileNumber = edit_mobile.text.toString().trim{ it <= ' '}
+        val bio = edit_bio.text.toString()
+        val profession = edit_profession.text.toString()
+
+        if(mUserProfileImageURL.isNotEmpty()){
+            userHashMap[Constants.IMAGE] = mUserProfileImageURL
+        }
+
+        if (mobileNumber.isNotEmpty()){
+            userHashMap[Constants.MOBILE] = mobileNumber.toLong()
+        }
+
+        if (name.isNotEmpty()){
+            userHashMap[Constants.NAME] = name
+        }
+
+        if (bio.isNotEmpty()){
+            userHashMap[Constants.BIO] = bio
+        }
+
+        if (profession.isNotEmpty()){
+            userHashMap[Constants.PROFESSION] = profession
+        }
+        userHashMap[Constants.PROFILE_COMPLETE] =1
+
+        FirestoreClass().updateUserProfileData(this, userHashMap)
     }
 
     fun userProfileUpdateSuccess(){
@@ -152,11 +163,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun imageUploadSuccess(imageURL: String){
-        hideProgressDialog()
-        Toast.makeText(
-            this@UserProfileActivity,
-            "La imagen se subió correctamente. URL de la imagen es. $imageURL",
-            Toast.LENGTH_SHORT
-        ).show()
+        mUserProfileImageURL = imageURL
+        updateUserProfileDetails()
     }
 }
