@@ -24,7 +24,7 @@ class SplashActivity : AppCompatActivity() {
         ObjectAnimator.ofInt(progressBar, "progress", current_progress).setDuration(3000).start()
 
         Handler().postDelayed({
-            val intento = Intent(this, MainActivity::class.java)
+            val intento = Intent(this, LoginActivity::class.java)
             startActivity(intento)
             finish() }, 3500)
 
@@ -32,7 +32,4 @@ class SplashActivity : AppCompatActivity() {
         AppTitle.typeface = typeface*/
 
     }
-
-
-
 }

@@ -1,3 +1,57 @@
 <resources>
     <string name="app_name">CreativeBaz</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Inicio</string>
+    <string name="explore">Explorar</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="profile">Perfil</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="slogan">Tu arte al alcance de tus manos</string>
+    <string name="catpop">Categorías populares</string>
+
+    <string-array name="categorias">
+        <item>Artesanías</item>
+        <item>Ropa</item>
+        <item>Decoración</item>
+        <item>Pintura</item>
+        <item>Escultura</item>
+        <item>Joyería</item>
+        <item>Otro</item>
+    </string-array>
+
+    <string name="name">Nombre</string>
+    <string name="lname">Apellido</string>
+    <string name="mail">Correo</string>
+    <string name="address">Dirección</string>
+    <string name="password">Contraseña</string>
+    <string name="register">Registrarse</string>
+    <string name="login">Ingresar</string>
+    <string name="logout">Salir</string>
+    <string name="loginRegister"> Ya  tienes  cuenta?  Ingresa aquí</string>
+    <string name="registerLogin">No tienes cuenta? Crea una aquí</string>
+    <string name="profession">Profesión</string>
+    <string name="profile_pic_desc">Profile Pic</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus commodo pulvinar metus at pharetra. Nullam facilisis lacus id ante placerat, eget pellentesque quam ullamcorper. Praesent cursus ornare nisi, ut consequat ipsum porta ut. Donec nec metus vel eros ultricies sodales. Aenean ullamcorper diam ac arcu rutrum, sit amet luctus lacus.</string>
+    <string name="edit_profile">Editar Perfil</string>
+    <string name="bio_hint">Escribe a detalle tu biografía :)</string>
+    <string name="acept">Aceptar</string>
+    <string name="contact_example">Ej: https://www.facebook.com/john.doe/</string>
+    <string name="phoneNumber">55 1234 5678</string>
+    <string name="bio_empty">¡Edita tu perfil para agregar información de ti como creador y la gente te conozca!</string>
+    <string name="err_msg_enter_first_name">Ingrese nombre</string>
+    <string name="err_msg_enter_email">Ingrese correo</string>
+    <string name="err_msg_enter_password">Ingrese contraseña</string>
+    <string name="please_wait">Por favor espere</string>
+
+    <string-array name="professions">
+        <item>Creador</item>
+        <item>Artesan@</item>
+        <item>Artísta</item>
+        <item>Escultor(a)</item>
+        <item>Joyer@</item>
+        <item>Pintor(a)</item>
+    </string-array>
 </resources>
