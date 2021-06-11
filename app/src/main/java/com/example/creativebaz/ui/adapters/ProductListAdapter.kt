@@ -10,6 +10,7 @@ import com.example.creativebaz.R
 import com.example.creativebaz.models.Product
 import com.example.creativebaz.ui.activities.ProductDetailsActivity
 import com.example.creativebaz.ui.fragments.ProductsFragment
+import com.example.creativebaz.utils.Constants
 import com.example.creativebaz.utils.GlideLoader
 import kotlinx.android.synthetic.main.item_list_layout.view.*
 
@@ -43,6 +44,7 @@ open class ProductListAdapter (
 
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, ProductDetailsActivity::class.java)
+                intent.putExtra(Constants.EXTRA_PRODUCT_ID, model.product_id)
                 context.startActivity(intent)
             }
         }
