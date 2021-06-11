@@ -68,5 +68,6 @@
 
     <dimen name="add_product_header_image_height">250dp</dimen>
     <dimen name="add_update_product_icon_padding">16dp</dimen>
+    <dimen name="no_data_found_textSize">20sp</dimen>
 
 </resources>

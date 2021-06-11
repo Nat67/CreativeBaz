@@ -6,10 +6,11 @@ import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.creativebaz.R
+import com.example.creativebaz.models.Product
 import com.example.creativebaz.ui.activities.AddProductActivity
 import com.example.creativebaz.ui.activities.SettingsActivity
 
-class ProductsFragment : Fragment() {
+class ProductsFragment : BaseFragment() {
 
     //private lateinit var homeViewModel: HomeViewModel
 
@@ -17,6 +18,15 @@ class ProductsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
+    fun successProductsListFromFirestore(productsList: ArrayList<Product>){
+        hideProgressDialog()
+
+        for(i in productsList){
+
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,9 +34,6 @@ class ProductsFragment : Fragment() {
     ): View? {
         //homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_products, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        textView.text = "this is home fragment"
-
         return root
     }
 

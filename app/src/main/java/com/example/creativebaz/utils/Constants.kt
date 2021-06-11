@@ -8,6 +8,8 @@ import android.webkit.MimeTypeMap
 
 object Constants {
     const val USERS : String = "users"
+    const val PRODUCTS : String = "products"
+
     const val CREATIVEBAZ_PREFS : String = "CreativeBazPrefs"
     const val LOGGED_IN_USERNAME: String = "logged_in_username"
     const val EXTRA_USER_DETAILS: String = "extra_user_details"
@@ -20,8 +22,12 @@ object Constants {
     const val BIO: String = "bio"
     const val NAME: String = "name"
     const val IMAGE: String = "image"
-    const val USER_PROFILE_IMAGE: String = "User_Profile_Image"
     const val PROFILE_COMPLETE: String = "profileCompleted"
+
+    const val PRODUCT_IMAGE : String= "Product_Image"
+    const val USER_PROFILE_IMAGE: String = "User_Profile_Image"
+
+    const val USER_ID : String = "user_id"
 
     fun showImageChooser(activity: Activity){
         val galleryIntent = Intent(

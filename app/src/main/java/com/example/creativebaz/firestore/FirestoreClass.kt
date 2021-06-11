@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import com.example.creativebaz.ui.activities.LoginActivity
-import com.example.creativebaz.ui.activities.RegisterActivity
-import com.example.creativebaz.ui.activities.UserProfileActivity
+import androidx.fragment.app.Fragment
+import com.example.creativebaz.models.Product
 import com.example.creativebaz.models.User
-import com.example.creativebaz.ui.activities.SettingsActivity
+import com.example.creativebaz.ui.activities.*
+import com.example.creativebaz.ui.fragments.ProductsFragment
 import com.example.creativebaz.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -107,9 +107,9 @@ class FirestoreClass {
 
     }
 
-    fun uploadImageToCloudStorage(activity: Activity, imageFileUri: Uri?){
+    fun uploadImageToCloudStorage(activity: Activity, imageFileUri: Uri?, imageType:String){
         val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
-            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "." + Constants.getFileExtension(
+            imageType + System.currentTimeMillis() + "." + Constants.getFileExtension(
                 activity,
                 imageFileUri
             )
@@ -127,12 +127,18 @@ class FirestoreClass {
                         is UserProfileActivity -> {
                             activity.imageUploadSuccess(uri.toString())
                         }
+                        is AddProductActivity -> {
+                            activity.imageUploadSuccess(uri.toString())
+                        }
                     }
                 }
         }
             .addOnFailureListener{ exception ->
                 when(activity){
                     is UserProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is AddProductActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
@@ -143,5 +149,43 @@ class FirestoreClass {
                 )
             }
     }
+
+    fun registerProduct(activity: AddProductActivity, productInfo: Product){
+        mFireStore.collection(Constants.PRODUCTS)
+                .document()
+                .set(productInfo, SetOptions.merge())
+                .addOnSuccessListener {
+                    activity.productUploadSuccess()
+                }
+                .addOnFailureListener{e ->
+                    activity.hideProgressDialog()
+                    Log.e(
+                            activity.javaClass.simpleName,
+                            "Error al registrar el producto"
+                    )
+                }
+    }
+
+    fun getProductsList(fragment: Fragment){
+        mFireStore.collection(Constants.PRODUCTS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e("Products list:", document.documents.toString())
+                val productsList: ArrayList<Product> = ArrayList()
+                for(i in document.documents){
+                    val product = i.toObject(Product::class.java)
+                    product!!.product_id = i.id
+                    productsList.add(product)
+                }
+
+                when(fragment){
+                    is ProductsFragment -> {
+                        fragment.successProductsListFromFirestore(productsList)
+                    }
+                }
+            }
+    }
+
 
 }

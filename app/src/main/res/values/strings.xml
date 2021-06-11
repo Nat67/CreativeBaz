@@ -76,5 +76,12 @@
     <string name="content_description">Product Image</string>
     <string name="btn_lbl_submit">Subir Producto</string>
     <string name="hint_product_category">Categoría del producto</string>
+    <string name="err_msg_select_product_image">Por favor selecciona una imagen del producto</string>
+    <string name="err_msg_select_product_title">Por favor dale un titulo a tu obra</string>
+    <string name="err_msg_select_product_price">Por favor elige un precio</string>
+    <string name="err_msg_select_product_quantity">Por favor pon la cantidad de productos que tienes</string>
+    <string name="err_msg_select_product_category">Por favor elije una categoría</string>
+    <string name="product_upload_success_message">Tu producto se ha agregado exitosamente</string>
+    <string name="no_products_added_yet">Aún no hay productos agregados</string>
 
 </resources>

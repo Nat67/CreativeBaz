@@ -174,13 +174,13 @@
                     android:id="@+id/et_product_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:padding="@dimen/et_padding"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.example.creativebaz.utils.PrincipalButton
-                android:id="@+id/btn_submit"
+                android:id="@+id/btn_submit_add_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
