@@ -169,6 +169,6 @@
     <string name="title_sold_products">Productos vendidios</string>
     <string name="no_products_sold_out_yet">Sin productos vacios todavía</string>
 
-    <string name="title_sold_product_details">SOLD PRODUCT DETAILS</string>
+    <string name="title_sold_product_details">Detalles de producto vendido</string>
 
 </resources>

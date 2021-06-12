@@ -6,13 +6,12 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
-import com.example.creativebaz.models.Address
-import com.example.creativebaz.models.CartItem
-import com.example.creativebaz.models.Product
-import com.example.creativebaz.models.User
+import com.example.creativebaz.models.*
 import com.example.creativebaz.ui.activities.*
 import com.example.creativebaz.ui.fragments.DashboardFragment
+import com.example.creativebaz.ui.fragments.OrdersFragment
 import com.example.creativebaz.ui.fragments.ProductsFragment
+import com.example.creativebaz.ui.fragments.SoldProductsFragment
 import com.example.creativebaz.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,78 +22,6 @@ import com.google.firebase.storage.StorageReference
 class FirestoreClass {
 
     private val mFireStore = FirebaseFirestore.getInstance()
-
-    fun addAddress(activity: AddEditAddressActivity, addressInfo: Address){
-        mFireStore.collection(Constants.ADDRESSES)
-            .document()
-            .set(addressInfo, SetOptions.merge())
-            .addOnSuccessListener {
-                activity.addUpdateAddressSuccess()
-            }
-            .addOnFailureListener { e->
-                activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName, "Error al añadir la dirección", e)
-            }
-    }
-
-    fun getAddressesList(activity: AddressListActivity){
-        mFireStore.collection(Constants.ADDRESSES)
-            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
-            .get()
-            .addOnSuccessListener {
-                document ->
-                Log.e(activity.javaClass.simpleName, document.documents.toString())
-                val addressList: ArrayList<Address> = ArrayList()
-                for (i in document.documents){
-                    val address = i.toObject(Address::class.java)!!
-                    address.id = i.id
-                    addressList.add(address)
-                }
-                activity.successAddressListFromFirestore(addressList)
-            }
-            .addOnFailureListener {
-                activity.hideProgressDialog()
-                Log.e(
-                    activity.javaClass.simpleName,
-                    "Error al obtener las direcciones"
-                )
-            }
-    }
-
-    fun updateAddress(activity: AddEditAddressActivity, addressInfo: Address, addressId: String){
-        mFireStore.collection(Constants.ADDRESSES)
-            .document(addressId)
-            .set(addressInfo, SetOptions.merge())
-            .addOnSuccessListener {
-
-                activity.addUpdateAddressSuccess()
-            }
-            .addOnFailureListener { e ->
-                activity.hideProgressDialog()
-                Log.e(
-                    activity.javaClass.simpleName,
-                    "Error while updating the Address.",
-                    e
-                )
-            }
-    }
-
-    fun deleteAddress(activity: AddressListActivity, addressId: String){
-        mFireStore.collection(Constants.ADDRESSES)
-            .document(addressId)
-            .delete()
-            .addOnSuccessListener {
-                activity.deleteAddressSuccess()
-            }
-            .addOnFailureListener { e ->
-                activity.hideProgressDialog()
-                Log.e(
-                    activity.javaClass.simpleName,
-                    "Error while deleting the Address.",
-                    e
-                )
-            }
-    }
 
     fun registerUser(activity: RegisterActivity, userInfo: User){
         mFireStore.collection(Constants.USERS)
@@ -168,6 +95,8 @@ class FirestoreClass {
             }
     }
 
+
+
     fun updateUserProfileData(activity: Activity, userHashMap: HashMap<String, Any>){
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
@@ -240,66 +169,20 @@ class FirestoreClass {
             }
     }
 
+
     fun registerProduct(activity: AddProductActivity, productInfo: Product){
         mFireStore.collection(Constants.PRODUCTS)
-                .document()
-                .set(productInfo, SetOptions.merge())
-                .addOnSuccessListener {
-                    activity.productUploadSuccess()
-                }
-                .addOnFailureListener{e ->
-                    activity.hideProgressDialog()
-                    Log.e(
-                            activity.javaClass.simpleName,
-                            "Error al registrar el producto"
-                    )
-                }
-    }
-
-    fun removeItemFromCart(context: Context, cart_id: String){
-        mFireStore.collection(Constants.PRODUCTS)
-            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
-            .get()
-            .addOnSuccessListener { document ->
-
-                when (context) {
-                    is CartListActivity -> {
-                        context.itemRemovedSuccess()
-                    }
-                }
-
+            .document()
+            .set(productInfo, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.productUploadSuccess()
             }
-            .addOnFailureListener { e ->
-                when (context) {
-                    is CartListActivity -> {
-                        context.hideProgressDialog()
-                    }
-                }
-                Log.e(
-                    context.javaClass.simpleName,
-                    "Error while removing the item from the cart list.",
-                    e
-                )
-            }
-    }
-
-    fun getAllProductsList(activity: CartListActivity){
-        mFireStore.collection(Constants.PRODUCTS)
-            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
-            .get()
-            .addOnSuccessListener { document ->
-                Log.e("Product List", document.documents.toString())
-                val productList: ArrayList<Product> = ArrayList()
-                for ( i in document.documents){
-                    val product = i.toObject(Product::class.java)
-                    product!!.product_id = i.id
-                    productList.add(product)
-                }
-                activity.successProductsListFromFireStore(productList)
-            }
-            .addOnFailureListener { e ->
+            .addOnFailureListener{e ->
                 activity.hideProgressDialog()
-                Log.e("Get product list", "Error al obtener lso productos")
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error al registrar el producto"
+                )
             }
     }
 
@@ -324,6 +207,45 @@ class FirestoreClass {
             }
     }
 
+
+    fun getAllProductsList(activity: Activity){
+        mFireStore.collection(Constants.PRODUCTS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e("Product List", document.documents.toString())
+                val productList: ArrayList<Product> = ArrayList()
+                for ( i in document.documents){
+                    val product = i.toObject(Product::class.java)
+                    product!!.product_id = i.id
+                    productList.add(product)
+                }
+
+                when(activity){
+                    is CartListActivity ->{
+                        activity.successProductsListFromFireStore(productList)
+                    }
+                    is CheckoutActivity -> {
+                        activity.successProductListFromFireStore(productList)
+                    }
+                }
+
+            }
+            .addOnFailureListener { e ->
+                when(activity){
+                    is CartListActivity ->{
+                        activity.hideProgressDialog()
+                        Log.e("Get product list", "Error al obtener lso productos")
+                    }
+                    is CheckoutActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
+            }
+    }
+
+
     fun getDasbhoardItemsList(fragment: DashboardFragment){
         mFireStore.collection(Constants.PRODUCTS)
             .get()
@@ -338,11 +260,12 @@ class FirestoreClass {
                 fragment.successDashboardItemsList(productsList)
             }
             .addOnFailureListener {
-                e ->
+                    e ->
                 fragment.hideProgressDialog()
                 Log.e(fragment.javaClass.simpleName, "Error al obtener los ítems", e)
             }
     }
+
 
     fun getProductDetails(activity: ProductDetailsActivity, productId: String){
         mFireStore.collection(Constants.PRODUCTS)
@@ -380,6 +303,8 @@ class FirestoreClass {
             }
     }
 
+
+
     fun addCartItems(activity: ProductDetailsActivity, addToCart: CartItem){
         mFireStore.collection(Constants.CART_ITEMS)
             .document()
@@ -387,20 +312,50 @@ class FirestoreClass {
             .addOnSuccessListener {
                 activity.addToCartSuccess()
             }.addOnFailureListener{
-                e ->
+                    e ->
                 activity.hideProgressDialog()
                 Log.e(activity.javaClass.simpleName, "Error al crear el documento para agregar al carrito", e)
             }
     }
+
+
+    fun removeItemFromCart(context: Context, cart_id: String){
+        mFireStore.collection(Constants.PRODUCTS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .get()
+            .addOnSuccessListener { document ->
+
+                when (context) {
+                    is CartListActivity -> {
+                        context.itemRemovedSuccess()
+                    }
+                }
+
+            }
+            .addOnFailureListener { e ->
+                when (context) {
+                    is CartListActivity -> {
+                        context.hideProgressDialog()
+                    }
+                }
+                Log.e(
+                    context.javaClass.simpleName,
+                    "Error while removing the item from the cart list.",
+                    e
+                )
+            }
+    }
+
+
 
     fun getCartList(activity: Activity){
         mFireStore.collection(Constants.CART_ITEMS)
             .whereEqualTo(Constants.USER_ID, getCurrentUserId())
             .get()
             .addOnSuccessListener {document ->
-                val list:ArrayList<CartItem> = ArrayList()
+                val list:ArrayList<Cart> = ArrayList()
                 for(i in document.documents){
-                    var cartItem = i.toObject(CartItem:: class.java)!!
+                    var cartItem = i.toObject(Cart:: class.java)!!
                     cartItem.id = i.id
                     list.add(cartItem)
                 }
@@ -408,12 +363,18 @@ class FirestoreClass {
                     is CartListActivity -> {
                         activity.getSuccessCartItemsList(list)
                     }
+                    is CheckoutActivity -> {
+                        activity.successCartItemsList(list)
+                    }
                 }
             }
             .addOnFailureListener{
                 e ->
                 when(activity){
                     is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is CheckoutActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
@@ -461,6 +422,180 @@ class FirestoreClass {
                 Log.e(
                     context.javaClass.simpleName,
                     "Error while updating the cart item.",
+                    e
+                )
+            }
+    }
+
+
+    fun addAddress(activity: AddEditAddressActivity, addressInfo: Address){
+        mFireStore.collection(Constants.ADDRESSES)
+            .document()
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.addUpdateAddressSuccess()
+            }
+            .addOnFailureListener { e->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error al añadir la dirección", e)
+            }
+    }
+
+    fun getAddressesList(activity: AddressListActivity){
+        mFireStore.collection(Constants.ADDRESSES)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .get()
+            .addOnSuccessListener {
+                    document ->
+                Log.e(activity.javaClass.simpleName, document.documents.toString())
+                val addressList: ArrayList<Address> = ArrayList()
+                for (i in document.documents){
+                    val address = i.toObject(Address::class.java)!!
+                    address.id = i.id
+                    addressList.add(address)
+                }
+                activity.successAddressListFromFirestore(addressList)
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error al obtener las direcciones"
+                )
+            }
+    }
+
+    fun updateAddress(activity: AddEditAddressActivity, addressInfo: Address, addressId: String){
+        mFireStore.collection(Constants.ADDRESSES)
+            .document(addressId)
+            .set(addressInfo, SetOptions.merge())
+            .addOnSuccessListener {
+
+                activity.addUpdateAddressSuccess()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating the Address.",
+                    e
+                )
+            }
+    }
+
+    fun deleteAddress(activity: AddressListActivity, addressId: String){
+        mFireStore.collection(Constants.ADDRESSES)
+            .document(addressId)
+            .delete()
+            .addOnSuccessListener {
+                activity.deleteAddressSuccess()
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while deleting the Address.",
+                    e
+                )
+            }
+    }
+
+
+    fun placeOrder(activity: CheckoutActivity, order: Order){
+        mFireStore.collection(Constants.ORDERS)
+            .document()
+            .set(order, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.orderPlacedSuccess()
+            }.addOnFailureListener {
+                    e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error al registrar la orden", e)
+            }
+    }
+
+    fun updateAllDetails(activity: CheckoutActivity, cartList: ArrayList<Cart>, order: Order){
+        val writeBatch = mFireStore.batch()
+
+        for(cartItem in cartList){
+            val productHashMap = HashMap<String, Any>()
+
+            productHashMap[Constants.STOCK_QUANTITY] =
+                (cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
+
+            val documentReference = mFireStore.collection(Constants.PRODUCTS)
+                .document(cartItem.product_id)
+
+            writeBatch.update(documentReference, productHashMap)
+        }
+
+        for (cartItem in cartList){
+            val documentReference = mFireStore.collection(Constants.CART_ITEMS)
+                .document(cartItem.id)
+            writeBatch.delete(documentReference)
+        }
+
+        writeBatch.commit().addOnSuccessListener {
+            activity.allDetailsUpdatedSuccessfully()
+        }.addOnFailureListener {
+                e ->
+            activity.hideProgressDialog()
+            Log.e(activity.javaClass.simpleName, "Error al actualizar órdenes", e)
+        }
+    }
+
+    fun getMyOrdersList(fragment: OrdersFragment){
+        mFireStore.collection(Constants.ORDERS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .get()
+            .addOnSuccessListener {document ->
+                val list: ArrayList<Order> = ArrayList()
+
+                for(i in document.documents){
+                    val orderItem = i.toObject(Order:: class.java)!!
+                    orderItem.id = i.id
+                    list.add(orderItem)
+                }
+
+                fragment.populateOrdersListInUI(list)
+
+            }.addOnFailureListener {
+                    e ->
+                fragment.hideProgressDialog()
+                Log.e(fragment.javaClass.simpleName, "Error al obtener órdenes", e)
+            }
+    }
+
+    fun getSoldProductsList(fragment: SoldProductsFragment) {
+        // The collection name for SOLD PRODUCTS
+        mFireStore.collection(Constants.SOLD_PRODUCTS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+                // Here we get the list of sold products in the form of documents.
+                Log.e(fragment.javaClass.simpleName, document.documents.toString())
+
+                // Here we have created a new instance for Sold Products ArrayList.
+                val list: ArrayList<SoldProduct> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Sold Products ArrayList.
+                for (i in document.documents) {
+
+                    val soldProduct = i.toObject(SoldProduct::class.java)!!
+                    soldProduct.id = i.id
+
+                    list.add(soldProduct)
+                }
+
+                fragment.successSoldProductsList(list)
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error.
+                fragment.hideProgressDialog()
+
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "Error while getting the list of sold products.",
                     e
                 )
             }

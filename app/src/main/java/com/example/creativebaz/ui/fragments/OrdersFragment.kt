@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.creativebaz.R
+import com.example.creativebaz.firestore.FirestoreClass
+import com.example.creativebaz.models.Order
 
 class OrdersFragment : BaseFragment() {
 
@@ -21,5 +23,21 @@ class OrdersFragment : BaseFragment() {
         val root = inflater.inflate(R.layout.fragment_orders, container, false)
 
         return root
+    }
+
+    fun populateOrdersListInUI(orderList: ArrayList<Order>){
+        hideProgressDialog()
+
+
+    }
+
+    private fun getMyOrdersList(){
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().getMyOrdersList(this@OrdersFragment)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getMyOrdersList()
     }
 }

@@ -8,6 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.creativebaz.R
 import com.example.creativebaz.firestore.FirestoreClass
+import com.example.creativebaz.models.Cart
 import com.example.creativebaz.models.CartItem
 import com.example.creativebaz.models.Product
 import com.example.creativebaz.ui.adapters.CartItemsListAdapter
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_cart_list.*
 class CartListActivity : BaseActivity() {
 
     private lateinit var mProductList: ArrayList<Product>
-    private lateinit var mCartListItems: ArrayList<CartItem>
+    private lateinit var mCartListItems: ArrayList<Cart>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,7 @@ class CartListActivity : BaseActivity() {
         FirestoreClass().getAllProductsList(this@CartListActivity)
     }
 
-    fun getSuccessCartItemsList(cartList:ArrayList<CartItem>){
+    fun getSuccessCartItemsList(cartList:ArrayList<Cart>){
         hideProgressDialog()
 
         for (product in mProductList){
@@ -81,7 +82,7 @@ class CartListActivity : BaseActivity() {
             rv_cart_items_list.layoutManager = LinearLayoutManager(this@CartListActivity)
             rv_cart_items_list.setHasFixedSize(true)
 
-            val cartListAdapter = CartItemsListAdapter(this@CartListActivity, cartList)
+            val cartListAdapter = CartItemsListAdapter(this@CartListActivity, mCartListItems, true)
             rv_cart_items_list.adapter = cartListAdapter
 
             var subtotal: Double = 0.0

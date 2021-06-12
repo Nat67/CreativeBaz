@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.creativebaz.R
 import com.example.creativebaz.models.Address
 import com.example.creativebaz.ui.activities.AddEditAddressActivity
+import com.example.creativebaz.ui.activities.CheckoutActivity
 import com.example.creativebaz.utils.Constants
 import kotlinx.android.synthetic.main.item_address_layout.view.*
 
@@ -46,11 +47,9 @@ open class AddressListAdapter(
 
             if (selectAddress) {
                 holder.itemView.setOnClickListener {
-                    Toast.makeText(
-                        context,
-                        "Selected address : ${model.address}, ${model.zipCode}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val intent = Intent(context, CheckoutActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_SELECTED_ADDRESS, model)
+                    context.startActivity(intent)
                 }
             }
 

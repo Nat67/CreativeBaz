@@ -15,10 +15,16 @@
         android:roundIcon="@mipmap/creativebaz_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CreativeBaz">
+        <activity android:name=".ui.activities.SoldProductDetailsActivity"></activity>
+        <activity android:name=".ui.activities.MyOrderDetailsActivity" />
+        <activity
+            android:name=".ui.activities.CheckoutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.activities.AddEditAddressActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.activities.AddressListActivity"
             android:screenOrientation="portrait"
