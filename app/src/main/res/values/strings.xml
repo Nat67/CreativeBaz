@@ -122,7 +122,7 @@
     <string name="hint_full_name">Nombre</string>
     <string name="hint_phone_number">Celular</string>
     <string name="hint_address">Dirección</string>
-    <string name="hint_zip_code">Código poastal</string>
+    <string name="hint_zip_code">Código postal</string>
     <string name="hint_additional_note">Notas adicionales</string>
     <string name="hint_other_details">Otros detalles</string>
     <string name="lbl_home">CASA</string>
@@ -143,7 +143,7 @@
     <string name="msg_your_address_updated_successfully">Your address is updated successfully.</string>
 
     <string name="err_your_address_deleted_successfully">Your address is deleted successfully.</string>
-    <string name="title_select_address">SELECT ADDRESS</string>
+    <string name="title_select_address">SELECCIONAR DIRECCIÓN</string>
 
     <string name="title_checkout">PAGAR</string>
     <string name="checkout_lbl_product_items">Artículos</string>
