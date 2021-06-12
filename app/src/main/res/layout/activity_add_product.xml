@@ -65,13 +65,23 @@
                     android:padding="@dimen/add_update_product_icon_padding"
                     android:src="@drawable/ic_add_photo"/>
 
+                <com.example.creativebaz.utils.PrincipalButton
+                    android:id="@+id/btn_predict"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="start|bottom"
+                    android:padding="@dimen/et_padding"
+                    android:textSize="@dimen/et_textSize"
+                    android:text="Predict!"/>
+
             </FrameLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_product_title"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
@@ -87,6 +97,7 @@
                     android:inputType="text"
                     android:padding="@dimen/et_padding"
                     android:textSize="@dimen/et_textSize" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

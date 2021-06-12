@@ -5,22 +5,31 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.provider.SyncStateContract
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.creativebaz.R
 import com.example.creativebaz.firestore.FirestoreClass
+import com.example.creativebaz.ml.MobilenetV110224Quant
 import com.example.creativebaz.models.Product
 import com.example.creativebaz.utils.Constants
 import com.example.creativebaz.utils.GlideLoader
+import com.google.protobuf.LazyStringArrayList
 import kotlinx.android.synthetic.main.activity_add_product.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.IOException
 
 class AddProductActivity : BaseActivity(), View.OnClickListener {
@@ -28,13 +37,18 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
     private var mSelectedImageFileURI: Uri? = null
     private var mProductImageURL : String = ""
 
+    lateinit var bitmap: Bitmap
+    lateinit var imgView: ImageView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_product)
         setupActionBar()
 
         iv_add_update_product.setOnClickListener(this)
-        btn_submit_add_product.setOnClickListener(this);
+        btn_submit_add_product.setOnClickListener(this)
+        btn_predict.setOnClickListener { this }
     }
 
     private fun setupActionBar(){
@@ -66,10 +80,55 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
                         uploadProductImage()
                     }
                 }
+
+                R.id.btn_predict -> {
+                    Log.e("Predict", "Inside button")
+                    if(mSelectedImageFileURI != null){
+
+                        val fileName = "label.txt"
+                        val inputString = application.assets.open(fileName).bufferedReader().use{it.readText()}
+                        var townList = inputString.split("\n")
+
+                        var resized: Bitmap = Bitmap.createScaledBitmap(bitmap, 224,224,true)
+                        val model = MobilenetV110224Quant.newInstance(this)
+                        val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 224, 224, 3), DataType.UINT8)
+
+                        var tbuffer = TensorImage.fromBitmap(resized)
+                        var byteBuffer = tbuffer.buffer
+
+                        inputFeature0.loadBuffer(byteBuffer)
+
+                        val outputs = model.process(inputFeature0)
+                        val outputFeature0 = outputs.outputFeature0AsTensorBuffer
+
+                        var max = getMax(outputFeature0.floatArray)
+
+                        Log.i("Predict", "output: ${outputFeature0.floatArray[10].toString()}")
+
+                        Toast.makeText(this,outputFeature0.floatArray[max].toString(), Toast.LENGTH_LONG).show()
+
+                        tv_title.text = townList[max]
+
+                        model.close()
+                    }
+
+                }
             }
         }
     }
 
+    fun getMax(arr:FloatArray):Int{
+        var index = 0
+        var min = 0.0f
+
+        for (i in 0..1000){
+            if(arr[i]>min){
+                index = i
+                min= arr[i]
+            }
+        }
+        return index
+    }
 
     private fun validateProductDetails():Boolean{
         return when{
@@ -126,12 +185,15 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if(resultCode == Activity.RESULT_OK){
             if(requestCode == Constants.PICK_IMAGE_REQUEST_CODE){
                 if(data != null){
                     iv_add_update_product.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_edit_24))
 
                     mSelectedImageFileURI = data.data!!
+
+                    bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, mSelectedImageFileURI)
 
                     try {
                         GlideLoader(this).loadUserPicture(mSelectedImageFileURI!!, iv_product_image)

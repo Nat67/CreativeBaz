@@ -52,10 +52,8 @@ open class AddressListAdapter(
                     context.startActivity(intent)
                 }
             }
-
         }
     }
-
 
     override fun getItemCount(): Int {
         return list.size
