@@ -78,6 +78,21 @@ class FirestoreClass {
                     }
                 }
             }
+            .addOnFailureListener { e ->
+                when (activity) {
+                    is LoginActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is SettingsActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while getting user details.",
+                    e
+                )
+            }
     }
 
     fun updateUserProfileData(activity: Activity, userHashMap: HashMap<String, Any>){
@@ -166,6 +181,53 @@ class FirestoreClass {
                             "Error al registrar el producto"
                     )
                 }
+    }
+
+    fun removeItemFromCart(context: Context, cart_id: String){
+        mFireStore.collection(Constants.PRODUCTS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .get()
+            .addOnSuccessListener { document ->
+
+                when (context) {
+                    is CartListActivity -> {
+                        context.itemRemovedSuccess()
+                    }
+                }
+
+            }
+            .addOnFailureListener { e ->
+                when (context) {
+                    is CartListActivity -> {
+                        context.hideProgressDialog()
+                    }
+                }
+                Log.e(
+                    context.javaClass.simpleName,
+                    "Error while removing the item from the cart list.",
+                    e
+                )
+            }
+    }
+
+    fun getAllProductsList(activity: CartListActivity){
+        mFireStore.collection(Constants.PRODUCTS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserId())
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e("Product List", document.documents.toString())
+                val productList: ArrayList<Product> = ArrayList()
+                for ( i in document.documents){
+                    val product = i.toObject(Product::class.java)
+                    product!!.product_id = i.id
+                    productList.add(product)
+                }
+                activity.successProductsListFromFireStore(productList)
+            }
+            .addOnFailureListener { e ->
+                activity.hideProgressDialog()
+                Log.e("Get product list", "Error al obtener lso productos")
+            }
     }
 
     fun getProductsList(fragment: Fragment){
@@ -265,7 +327,7 @@ class FirestoreClass {
             .addOnSuccessListener {document ->
                 val list:ArrayList<CartItem> = ArrayList()
                 for(i in document.documents){
-                    var cartItem = i.toObject((CartItem:: class.java))!!
+                    var cartItem = i.toObject(CartItem:: class.java)!!
                     cartItem.id = i.id
                     list.add(cartItem)
                 }
@@ -302,6 +364,32 @@ class FirestoreClass {
                     e ->
                 activity.hideProgressDialog()
                 Log.e(activity.javaClass.simpleName, "Error al revisar carrito", e)
+            }
+    }
+
+    fun updateMyCart(context: Context, cart_id: String, itemHashMap: HashMap<String, Any>) {
+        mFireStore.collection(Constants.CART_ITEMS)
+            .document(cart_id) // cart id
+            .update(itemHashMap) // A HashMap of fields which are to be updated.
+            .addOnSuccessListener {
+                when (context) {
+                    is CartListActivity -> {
+                        context.itemUpdateSuccess()
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+
+                when (context) {
+                    is CartListActivity -> {
+                        context.hideProgressDialog()
+                    }
+                }
+                Log.e(
+                    context.javaClass.simpleName,
+                    "Error while updating the cart item.",
+                    e
+                )
             }
     }
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.creativebaz.R
 import com.example.creativebaz.firestore.FirestoreClass
 import com.example.creativebaz.models.CartItem
@@ -68,11 +69,19 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         tv_product_details_description.text = product.description
         tv_product_details_stock_quantity.text = product.stock_quantity
 
-        if(FirestoreClass().getCurrentUserId() == product.user_id){
+        if(product.stock_quantity.toInt() == 0){
             hideProgressDialog()
-        }else{
-            FirestoreClass().checkIfItemExistsInCart(this, mProductId)
+            btn_add_to_cart.visibility = View.GONE
+            tv_product_details_stock_quantity.text = resources.getString(R.string.lbl_out_of_stock)
+            tv_product_details_stock_quantity.setTextColor(ContextCompat.getColor(this@ProductDetailsActivity, R.color.colorSnackBarError))
+        } else{
+            if(FirestoreClass().getCurrentUserId() == product.user_id){
+                hideProgressDialog()
+            }else{
+                FirestoreClass().checkIfItemExistsInCart(this, mProductId)
+            }
         }
+
     }
 
     private fun setupActionBar(){
